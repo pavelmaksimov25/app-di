@@ -1,0 +1,81 @@
+{
+    "name": "spryker-projects/di",
+    "description": "Project Code to add Symfony's DependencyInjection container",
+    "license": "proprietary",
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "require": {
+        "php": ">=8.1",
+        "spryker/application": "^3.35.0",
+        "spryker/console": "^4.12.0",
+        "spryker/router": "^1.17"
+    },
+    "require-dev": {
+        "spryker/code-sniffer": "^0.17.10",
+        "codeception/codeception": "^5.0.0",
+        "codeception/module-asserts": "^3.0.0",
+        "codeception/module-cli": "^2.0.0",
+        "codeception/module-filesystem": "^3.0.0",
+        "codeception/module-phpbrowser": "^3.0.0",
+        "codeception/module-rest": "^3.0.0",
+        "codeception/module-webdriver": "^3.0.0",
+        "codeception/phpunit-wrapper": "^9.0.0",
+        "codeception/stub": "^4.0.0",
+        "spryker/testify": "^3.49.0",
+        "spryker-sdk/phpstan-spryker": "^0.4.0",
+        "rector/rector": "^0.18.0",
+        "spryker-sdk/security-checker": "^0.2.0",
+        "infection/infection": "^0.27.8",
+        "infection/codeception-adapter": "^0.4.2"
+    },
+    "autoload": {
+        "psr-4": {
+            "SprykerProject\\": "src/SprykerProject/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "SprykerProjectTest\\": [
+                "tests/SprykerProjectTest/",
+                "tests/_support"
+            ]
+        }
+    },
+    "scripts": {
+        "cs-check": "phpcs -p",
+        "cs-fix": "phpcbf -p",
+        "phpstan": [
+            "php -d memory_limit=-1 vendor/bin/phpstan"
+        ],
+        "phpstan-setup": "vendor/bin/console dev:ide-auto-completion:generate",
+        "phpstan-baseline": "phpstan analyze --generate-baseline",
+        "psalm": "psalm.phar --show-info=false",
+        "psalm-update-baseline": "psalm.phar --update-baseline",
+        "psalm-set-baseline": "psalm.phar --set-baseline=psalm-baseline.xml",
+        "psalm-update-report": "psalm.phar --report=psalm-report.xml",
+        "test": "codecept build && codecept run",
+        "test-cover": "codecept build && codecept run --coverage-xml",
+        "test-cover-html": "codecept build && codecept run --coverage-html",
+        "test-strict": "infection --threads=max --min-msi=100 --min-covered-msi=100",
+        "test-strict-ci": "infection --threads=max --logger-github=true --min-msi=100 --min-covered-msi=100",
+        "rector": "vendor/bin/rector process src/SprykerProject/ --ansi -a vendor/autoload.php",
+        "rector-ci": "vendor/bin/rector process src/SprykerProject/ --ansi --dry-run -a vendor/autoload.php",
+        "local-ci": "composer cs-fix && composer cs-check && composer phpstan && composer rector-ci && composer test && composer test-strict"
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0.x-dev"
+        }
+    },
+    "config": {
+        "use-include-path": true,
+        "process-timeout": 1800,
+        "chromium-revision": 814168,
+        "allow-plugins": {
+            "dealerdirect/phpcodesniffer-composer-installer": true,
+            "composer/package-versions-deprecated": true,
+            "codeception/c3": true,
+            "infection/extension-installer": true
+        }
+    }
+}
