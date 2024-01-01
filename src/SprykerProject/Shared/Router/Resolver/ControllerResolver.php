@@ -7,81 +7,10 @@
 
 namespace SprykerProject\Shared\Router\Resolver;
 
-use InvalidArgumentException;
-use Spryker\Service\Container\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\Controller\ControllerResolverInterface;
 
-class ControllerResolver implements ControllerResolverInterface
+class ControllerResolver extends \Spryker\Shared\Router\Resolver\ControllerResolver
 {
-    /**
-     * @var \Spryker\Service\Container\ContainerInterface
-     */
-    protected $container;
-
-    /**
-     * @param \Spryker\Service\Container\ContainerInterface $container
-     */
-    public function __construct(ContainerInterface $container)
-    {
-        $this->container = $container;
-    }
-
-    /**
-     * @param \Symfony\Component\HttpFoundation\Request $request
-     *
-     * @return callable|false
-     */
-    public function getController(Request $request): callable|false
-    {
-        $controller = $request->attributes->get('_controller');
-
-        if (!$controller) {
-            return false;
-        }
-
-        if (is_string($controller)) {
-            return $this->getControllerFromString($request, $controller);
-        }
-
-        if (is_array($controller)) {
-            return $this->getControllerFromArray($request, $controller);
-        }
-
-        if (is_object($controller)) {
-            return $this->getControllerFromObject($request, $controller);
-        }
-
-        return false;
-    }
-
-    /**
-     * @param \Symfony\Component\HttpFoundation\Request $request
-     * @param string $controller
-     *
-     * @return callable|false
-     */
-    protected function getControllerFromString(Request $request, string $controller)
-    {
-        if (strpos($controller, ':') === false) {
-            return false;
-        }
-
-        [$controllerServiceIdentifier, $actionName] = explode(':', $controller);
-        if ($this->container->has($controllerServiceIdentifier)) {
-            $controllerNameSpace = $this->container->get($controllerServiceIdentifier);
-            $controllerInstance = new $controllerNameSpace();
-            $controllerInstance = $this->injectContainerAndInitialize($controllerInstance);
-
-            /** @phpstan-var callable $callable*/
-            $callable = [$controllerInstance, $actionName];
-
-            return $callable;
-        }
-
-        return false;
-    }
-
     /**
      * @param \Symfony\Component\HttpFoundation\Request $request
      * @param array $controller
@@ -119,57 +48,5 @@ class ControllerResolver implements ControllerResolverInterface
         $callable = [$controllerInstance, $controller[1]];
 
         return $callable;
-    }
-
-    /**
-     * @param \Symfony\Component\HttpFoundation\Request $request
-     * @param object $controller
-     *
-     * @throws \InvalidArgumentException
-     *
-     * @return callable
-     */
-    protected function getControllerFromObject(Request $request, $controller)
-    {
-        if (method_exists($controller, '__invoke')) {
-
-            /** @phpstan-var callable $controller*/
-            $controller = $this->injectContainerAndInitialize($controller);
-
-            return $controller;
-        }
-
-        throw new InvalidArgumentException(sprintf('Controller "%s" for URI "%s" is not callable.', get_class($controller), $request->getPathInfo()));
-    }
-
-    /**
-     * @param object $controller
-     *
-     * @return object
-     */
-    protected function injectContainerAndInitialize($controller)
-    {
-        if (method_exists($controller, 'setApplication')) {
-            $controller->setApplication($this->container);
-        }
-
-        if (method_exists($controller, 'initialize')) {
-            $controller->initialize();
-        }
-
-        return $controller;
-    }
-
-    /**
-     * @deprecated This method is deprecated as of 3.1 and will be removed in 4.0. Implement the ArgumentResolverInterface and inject it in the HttpKernel instead.
-     *
-     * @param \Symfony\Component\HttpFoundation\Request $request
-     * @param \Spryker\Zed\Kernel\Communication\Controller\AbstractController $controller
-     *
-     * @return array
-     */
-    public function getArguments(Request $request, $controller)
-    {
-        return [];
     }
 }
