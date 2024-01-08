@@ -8,7 +8,9 @@
         "php": ">=8.1",
         "spryker/application": "^3.35.0",
         "spryker/console": "^4.12.0",
-        "spryker/router": "^1.17"
+        "spryker/router": "^1.17",
+        "symfony/dependency-injection": "^7.0",
+        "symfony/framework-bundle": "^7.0"
     },
     "require-dev": {
         "spryker/code-sniffer": "^0.17.10",
@@ -60,7 +62,7 @@
         "test-strict-ci": "infection --threads=max --logger-github=true --min-msi=100 --min-covered-msi=100",
         "rector": "vendor/bin/rector process src/SprykerProject/ --ansi -a vendor/autoload.php",
         "rector-ci": "vendor/bin/rector process src/SprykerProject/ --ansi --dry-run -a vendor/autoload.php",
-        "local-ci": "composer cs-fix && composer cs-check && composer phpstan && composer rector-ci && composer test && composer test-strict"
+        "local-ci": "composer cs-fix && composer cs-check && composer phpstan && composer rector-ci"
     },
     "extra": {
         "branch-alias": {

@@ -7,17 +7,15 @@
 
 namespace SprykerProject\Shared\Router\Resolver;
 
+use Spryker\Shared\Router\Resolver\ControllerResolver as SprykerControllerResolver;
 use Symfony\Component\HttpFoundation\Request;
 
-class ControllerResolver extends \Spryker\Shared\Router\Resolver\ControllerResolver
+class ControllerResolver extends SprykerControllerResolver
 {
     /**
-     * @param \Symfony\Component\HttpFoundation\Request $request
-     * @param array $controller
-     *
-     * @return callable
+     * @param array<int, string> $controller
      */
-    protected function getControllerFromArray(Request $request, array $controller)
+    protected function getControllerFromArray(Request $request, array $controller): callable
     {
         $symfonyContainer = $this->container->get('symfony-container');
 

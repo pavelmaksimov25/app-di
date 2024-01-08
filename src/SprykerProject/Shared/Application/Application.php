@@ -9,22 +9,11 @@ namespace SprykerProject\Shared\Application;
 
 use Spryker\Service\Container\Container;
 use Spryker\Service\Container\ContainerInterface;
-use Spryker\Shared\ApplicationExtension\Dependency\Plugin\ApplicationPluginInterface;
-use Spryker\Shared\ApplicationExtension\Dependency\Plugin\BootableApplicationPluginInterface;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\HttpKernel;
-use Symfony\Component\HttpKernel\HttpKernelInterface;
-use Symfony\Component\HttpKernel\TerminableInterface;
-use Symfony\Component\Routing\Loader\ClosureLoader;
-use Symfony\Component\Routing\Router;
+use Spryker\Shared\Application\Application as SprykerApplication;
 
-class Application extends \Spryker\Shared\Application\Application
+class Application extends SprykerApplication
 {
-    /**
-     * @var \Spryker\Shared\Application\ApplicationKernel|null
-     */
-    protected ?\Spryker\Shared\Application\ApplicationKernel $kernel = null;
+    protected ?\SprykerProject\Shared\Application\ApplicationKernel $kernel = null;
 
     /**
      * @param \Spryker\Service\Container\ContainerInterface|null $container
@@ -34,9 +23,9 @@ class Application extends \Spryker\Shared\Application\Application
     {
         parent::__construct();
 
-        $this->kernel = new \Spryker\Shared\Application\ApplicationKernel('development', true);
+        $this->kernel = new ApplicationKernel('development', true);
 
-        if ($container === null) {
+        if (!$container instanceof ContainerInterface) {
             $container = new Container();
         }
 

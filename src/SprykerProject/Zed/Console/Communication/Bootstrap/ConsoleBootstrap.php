@@ -8,14 +8,14 @@
 namespace SprykerProject\Zed\Console\Communication\Bootstrap;
 
 use Spryker\Zed\Console\Business\Model\Environment;
-use Symfony\Bundle\FrameworkBundle\Console\Application;
+use Spryker\Zed\Console\Communication\Bootstrap\ConsoleBootstrap as SprykerConsoleBootstrap;
 
 /**
  * @method \Spryker\Zed\Console\ConsoleConfig getConfig()
  * @method \Spryker\Zed\Console\Communication\ConsoleCommunicationFactory getFactory()
  * @method \Spryker\Zed\Console\Business\ConsoleFacade getFacade()
  */
-class ConsoleBootstrap extends \Spryker\Zed\Console\Communication\Bootstrap\ConsoleBootstrap
+class ConsoleBootstrap extends SprykerConsoleBootstrap
 {
     /**
      * @param string $name
@@ -25,7 +25,10 @@ class ConsoleBootstrap extends \Spryker\Zed\Console\Communication\Bootstrap\Cons
     {
         Environment::initialize();
 
-        parent::__construct(new ConsoleKernel('production', false));
+        // Just for booting the Kernel with the right environment and building the container
+        new ConsoleKernel('production', false);
+
+        parent::__construct($name, $version);
 
         $this->setCatchExceptions($this->getConfig()->shouldCatchExceptions());
         $this->addEventDispatcher();

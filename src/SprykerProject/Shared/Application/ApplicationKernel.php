@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * Copyright © 2016-present Spryker Systems GmbH. All rights reserved.
+ * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
+ */
+
 namespace SprykerProject\Shared\Application;
 
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
@@ -11,20 +16,17 @@ class ApplicationKernel extends Kernel implements CompilerPassInterface
 {
     use MicroKernelTrait;
 
-    /**
-     * @return string
-     */
     public function getProjectDir(): string
     {
-        return \Spryker\Shared\Application\APPLICATION_ROOT_DIR;
+        return APPLICATION_ROOT_DIR;
     }
 
     /**
-     * @param ContainerBuilder $container
+     * @return void
      */
-    public function process(ContainerBuilder $container): void
+    public function process(ContainerBuilder $containerBuilder): void
     {
-        foreach ($container->getDefinitions() as $definition) {
+        foreach ($containerBuilder->getDefinitions() as $definition) {
             $class = $definition->getClass();
             if (str_ends_with($class, 'Controller')) {
                 $definition->setPublic(true);
