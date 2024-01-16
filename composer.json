@@ -9,8 +9,8 @@
         "spryker/application": "^3.35.0",
         "spryker/console": "^4.12.0",
         "spryker/router": "^1.17",
-        "symfony/dependency-injection": "^7.0",
-        "symfony/framework-bundle": "^7.0"
+        "symfony/dependency-injection": "^6.0 || ^7.0",
+        "symfony/framework-bundle": "^6.0 || ^7.0"
     },
     "require-dev": {
         "spryker/code-sniffer": "^0.17.10",
