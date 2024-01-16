@@ -1,5 +1,5 @@
 {
-    "name": "spryker-projects/di",
+    "name": "pavelmaksimov25/di",
     "description": "Project Code to add Symfony's DependencyInjection container",
     "license": "proprietary",
     "minimum-stability": "dev",
