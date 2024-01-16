@@ -1,5 +1,5 @@
 {
-    "name": "pavelmaksimov25/di",
+    "name": "pavelmaksimov25/app-di",
     "description": "Project Code to add Symfony's DependencyInjection container",
     "license": "proprietary",
     "minimum-stability": "dev",
